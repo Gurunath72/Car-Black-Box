@@ -1,0 +1,454 @@
+Version 4.0 HI-TECH Software Intermediate Code
+"35 ./clcd.h
+[; ;./clcd.h: 35: void clear_clcd(void);
+[v _clear_clcd `(v ~T0 @X0 0 ef ]
+"34
+[; ;./clcd.h: 34: void clcd_print(const char *str, unsigned char addr);
+[v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
+"11 set_time.c
+[; ;set_time.c: 11: extern unsigned char time[9];
+[v _time `uc ~T0 @X0 -> 0 `x e ]
+"31 ./digital_keypad.h
+[; ;./digital_keypad.h: 31: unsigned char read_digital_keypad(unsigned char mode);
+[v _read_digital_keypad `(uc ~T0 @X0 0 ef1`uc ]
+"7 set_time.c
+[; ;set_time.c: 7: extern unsigned char pwd_success;
+[v _pwd_success `uc ~T0 @X0 0 e ]
+"8
+[; ;set_time.c: 8: extern unsigned char dash_flag ;
+[v _dash_flag `uc ~T0 @X0 0 e ]
+"9
+[; ;set_time.c: 9: extern unsigned char menu_select;
+[v _menu_select `uc ~T0 @X0 0 e ]
+"24 ./main.h
+[; ;./main.h: 24: void write_time_rtc(void);
+[v _write_time_rtc `(v ~T0 @X0 0 ef ]
+"18 ./ds1307.h
+[; ;./ds1307.h: 18: void write_ds1307(unsigned char addr, unsigned char data);
+[v _write_ds1307 `(v ~T0 @X0 0 ef2`uc`uc ]
+"12 set_time.c
+[; ;set_time.c: 12: unsigned char clock_write[3] = {0};
+[v _clock_write `uc ~T0 @X0 -> 3 `i e ]
+[i _clock_write
+:U ..
+-> -> 0 `i `uc
+..
+]
+"13
+[; ;set_time.c: 13: unsigned char set_time_flag = 0;
+[v _set_time_flag `uc ~T0 @X0 1 e ]
+[i _set_time_flag
+-> -> 0 `i `uc
+]
+"15
+[; ;set_time.c: 15: void set_time(void)
+[v _set_time `(v ~T0 @X0 1 ef ]
+"16
+[; ;set_time.c: 16: {
+{
+[e :U _set_time ]
+[f ]
+"17
+[; ;set_time.c: 17:     clear_clcd();
+[e ( _clear_clcd ..  ]
+"18
+[; ;set_time.c: 18:     set_time_flag = 0;
+[e = _set_time_flag -> -> 0 `i `uc ]
+"19
+[; ;set_time.c: 19:     clcd_print("Time <HH:MM:SS> ",(0x80 + 0));
+[e ( _clcd_print (2 , :s 1C -> + -> 128 `i -> 0 `i `uc ]
+"20
+[; ;set_time.c: 20:     clcd_print(time,(0xC0 + 0));
+[e ( _clcd_print (2 , -> &U _time `*Cuc -> + -> 192 `i -> 0 `i `uc ]
+"21
+[; ;set_time.c: 21:     unsigned char time_key ;
+[v _time_key `uc ~T0 @X0 1 a ]
+"22
+[; ;set_time.c: 22:     unsigned char long_press1=1,long_press2 =1;
+[v _long_press1 `uc ~T0 @X0 1 a ]
+[e = _long_press1 -> -> 1 `i `uc ]
+[v _long_press2 `uc ~T0 @X0 1 a ]
+[e = _long_press2 -> -> 1 `i `uc ]
+"23
+[; ;set_time.c: 23:     unsigned long int key_press1=0,key_press2=0;
+[v _key_press1 `ul ~T0 @X0 1 a ]
+[e = _key_press1 -> -> -> 0 `i `l `ul ]
+[v _key_press2 `ul ~T0 @X0 1 a ]
+[e = _key_press2 -> -> -> 0 `i `l `ul ]
+[v F64 `uc ~T0 @X0 -> 3 `i s ]
+[i F64
+:U ..
+"24
+[; ;set_time.c: 24:     unsigned char blink[3] = "  ",blink_pos = 2;
+-> 32 `c
+-> 32 `c
+-> 0 `c
+..
+]
+[v _blink `uc ~T0 @X0 -> 3 `i a ]
+[e = _blink F64 ]
+[v _blink_pos `uc ~T0 @X0 1 a ]
+[e = _blink_pos -> -> 2 `i `uc ]
+[v F67 `uc ~T0 @X0 -> 3 `i s ]
+[i F67
+:U ..
+"25
+[; ;set_time.c: 25:     unsigned char time_field[3] = {'\0'};
+-> -> 0 `ui `uc
+..
+]
+[v _time_field `uc ~T0 @X0 -> 3 `i a ]
+[e = _time_field F67 ]
+"26
+[; ;set_time.c: 26:     unsigned char flag = 1;
+[v _flag `uc ~T0 @X0 1 a ]
+[e = _flag -> -> 1 `i `uc ]
+"27
+[; ;set_time.c: 27:     unsigned long int wait = 0;
+[v _wait `ul ~T0 @X0 1 a ]
+[e = _wait -> -> -> 0 `i `l `ul ]
+"28
+[; ;set_time.c: 28:     unsigned int time_digit = 0;
+[v _time_digit `ui ~T0 @X0 1 a ]
+[e = _time_digit -> -> 0 `i `ui ]
+"31
+[; ;set_time.c: 31:     while(1)
+[e :U 3 ]
+"32
+[; ;set_time.c: 32:     {
+{
+"33
+[; ;set_time.c: 33:         time_key = read_digital_keypad(0);
+[e = _time_key ( _read_digital_keypad (1 -> -> 0 `i `uc ]
+"34
+[; ;set_time.c: 34:         if(wait++ == 20000)
+[e $ ! == ++ _wait -> -> -> 1 `i `l `ul -> -> -> 20000 `i `l `ul 5  ]
+"35
+[; ;set_time.c: 35:         {
+{
+"36
+[; ;set_time.c: 36:             wait = 0;
+[e = _wait -> -> -> 0 `i `l `ul ]
+"37
+[; ;set_time.c: 37:             if(flag)
+[e $ ! != -> _flag `i -> 0 `i 6  ]
+"38
+[; ;set_time.c: 38:             {
+{
+"40
+[; ;set_time.c: 40:                 clcd_print(time,(0xC0 + 0));
+[e ( _clcd_print (2 , -> &U _time `*Cuc -> + -> 192 `i -> 0 `i `uc ]
+"42
+[; ;set_time.c: 42:                 flag = 0;
+[e = _flag -> -> 0 `i `uc ]
+"43
+[; ;set_time.c: 43:             }
+}
+[e $U 7  ]
+"44
+[; ;set_time.c: 44:             else
+[e :U 6 ]
+"45
+[; ;set_time.c: 45:             {
+{
+"47
+[; ;set_time.c: 47:                 clcd_print(blink,(0xC0 + 3*blink_pos));
+[e ( _clcd_print (2 , -> &U _blink `*Cuc -> + -> 192 `i * -> 3 `i -> _blink_pos `i `uc ]
+"49
+[; ;set_time.c: 49:                 flag = 1;
+[e = _flag -> -> 1 `i `uc ]
+"50
+[; ;set_time.c: 50:             }
+}
+[e :U 7 ]
+"51
+[; ;set_time.c: 51:         }
+}
+[e :U 5 ]
+"52
+[; ;set_time.c: 52:         if(time_key == 0x37)
+[e $ ! == -> _time_key `i -> 55 `i 8  ]
+"53
+[; ;set_time.c: 53:         {
+{
+"54
+[; ;set_time.c: 54:             key_press1++;
+[e ++ _key_press1 -> -> -> 1 `i `l `ul ]
+"55
+[; ;set_time.c: 55:             long_press1 = 0;
+[e = _long_press1 -> -> 0 `i `uc ]
+"57
+[; ;set_time.c: 57:         }
+}
+[e $U 9  ]
+"58
+[; ;set_time.c: 58:         else if(time_key == 0x3F && !long_press1)
+[e :U 8 ]
+[e $ ! && == -> _time_key `i -> 63 `i ! != -> _long_press1 `i -> 0 `i 10  ]
+"59
+[; ;set_time.c: 59:         {
+{
+"60
+[; ;set_time.c: 60:             long_press1 = 1;
+[e = _long_press1 -> -> 1 `i `uc ]
+"64
+[; ;set_time.c: 64:             if(key_press1 < 15000)
+[e $ ! < _key_press1 -> -> -> 15000 `i `l `ul 11  ]
+"65
+[; ;set_time.c: 65:             {
+{
+"66
+[; ;set_time.c: 66:                 key_press1 = 0;
+[e = _key_press1 -> -> -> 0 `i `l `ul ]
+"67
+[; ;set_time.c: 67:                 switch(blink_pos)
+[e $U 13  ]
+"68
+[; ;set_time.c: 68:                 {
+{
+"69
+[; ;set_time.c: 69:                     case 0 :
+[e :U 14 ]
+"70
+[; ;set_time.c: 70:                             time_digit = ((time[0]-48)*10)+(time[1]-48);
+[e = _time_digit -> + * - -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i -> 10 `i - -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i `ui ]
+"71
+[; ;set_time.c: 71:                             time_digit++;
+[e ++ _time_digit -> -> 1 `i `ui ]
+"72
+[; ;set_time.c: 72:                             if(time_digit == 24)
+[e $ ! == _time_digit -> -> 24 `i `ui 15  ]
+"73
+[; ;set_time.c: 73:                             {
+{
+"74
+[; ;set_time.c: 74:                                  time_digit = 0;
+[e = _time_digit -> -> 0 `i `ui ]
+"75
+[; ;set_time.c: 75:                             }
+}
+[e :U 15 ]
+"76
+[; ;set_time.c: 76:                             time[0] = (time_digit/10)+48;
+[e = *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux -> + / _time_digit -> -> 10 `i `ui -> -> 48 `i `ui `uc ]
+"77
+[; ;set_time.c: 77:                             time[1] = (time_digit%10)+48;
+[e = *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux -> + % _time_digit -> -> 10 `i `ui -> -> 48 `i `ui `uc ]
+"78
+[; ;set_time.c: 78:                             break;
+[e $U 12  ]
+"79
+[; ;set_time.c: 79:                     case 1 :
+[e :U 16 ]
+"80
+[; ;set_time.c: 80:                             time_digit = ((time[3]-48)*10)+(time[4]-48);
+[e = _time_digit -> + * - -> *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i -> 10 `i - -> *U + &U _time * -> -> -> 4 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i `ui ]
+"81
+[; ;set_time.c: 81:                             time_digit++;
+[e ++ _time_digit -> -> 1 `i `ui ]
+"82
+[; ;set_time.c: 82:                             if(time_digit == 60)
+[e $ ! == _time_digit -> -> 60 `i `ui 17  ]
+"83
+[; ;set_time.c: 83:                             {
+{
+"84
+[; ;set_time.c: 84:                                  time_digit = 0;
+[e = _time_digit -> -> 0 `i `ui ]
+"85
+[; ;set_time.c: 85:                             }
+}
+[e :U 17 ]
+"86
+[; ;set_time.c: 86:                             time[3] = (time_digit/10)+48;
+[e = *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux -> + / _time_digit -> -> 10 `i `ui -> -> 48 `i `ui `uc ]
+"87
+[; ;set_time.c: 87:                             time[4] = (time_digit%10)+48;
+[e = *U + &U _time * -> -> -> 4 `i `ui `ux -> -> # *U &U _time `ui `ux -> + % _time_digit -> -> 10 `i `ui -> -> 48 `i `ui `uc ]
+"88
+[; ;set_time.c: 88:                             break;
+[e $U 12  ]
+"89
+[; ;set_time.c: 89:                     case 2 :
+[e :U 18 ]
+"90
+[; ;set_time.c: 90:                             time_digit = ((time[6]-48)*10)+(time[7]-48);
+[e = _time_digit -> + * - -> *U + &U _time * -> -> -> 6 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i -> 10 `i - -> *U + &U _time * -> -> -> 7 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i `ui ]
+"91
+[; ;set_time.c: 91:                             time_digit++;
+[e ++ _time_digit -> -> 1 `i `ui ]
+"92
+[; ;set_time.c: 92:                             if(time_digit == 60)
+[e $ ! == _time_digit -> -> 60 `i `ui 19  ]
+"93
+[; ;set_time.c: 93:                             {
+{
+"94
+[; ;set_time.c: 94:                                  time_digit = 0;
+[e = _time_digit -> -> 0 `i `ui ]
+"95
+[; ;set_time.c: 95:                             }
+}
+[e :U 19 ]
+"96
+[; ;set_time.c: 96:                             time[6] = (time_digit/10)+48;
+[e = *U + &U _time * -> -> -> 6 `i `ui `ux -> -> # *U &U _time `ui `ux -> + / _time_digit -> -> 10 `i `ui -> -> 48 `i `ui `uc ]
+"97
+[; ;set_time.c: 97:                             time[7] = (time_digit%10)+48;
+[e = *U + &U _time * -> -> -> 7 `i `ui `ux -> -> # *U &U _time `ui `ux -> + % _time_digit -> -> 10 `i `ui -> -> 48 `i `ui `uc ]
+"98
+[; ;set_time.c: 98:                             break;
+[e $U 12  ]
+"99
+[; ;set_time.c: 99:                 }
+}
+[e $U 12  ]
+[e :U 13 ]
+[e [\ -> _blink_pos `i , $ -> 0 `i 14
+ , $ -> 1 `i 16
+ , $ -> 2 `i 18
+ 12 ]
+[e :U 12 ]
+"100
+[; ;set_time.c: 100:             }
+}
+[e $U 20  ]
+"101
+[; ;set_time.c: 101:             else
+[e :U 11 ]
+"102
+[; ;set_time.c: 102:             {
+{
+"103
+[; ;set_time.c: 103:                 key_press1 = 0;
+[e = _key_press1 -> -> -> 0 `i `l `ul ]
+"104
+[; ;set_time.c: 104:                 pwd_success = 0;
+[e = _pwd_success -> -> 0 `i `uc ]
+"105
+[; ;set_time.c: 105:                 dash_flag = 1;
+[e = _dash_flag -> -> 1 `i `uc ]
+"106
+[; ;set_time.c: 106:                 menu_select = 0;
+[e = _menu_select -> -> 0 `i `uc ]
+"107
+[; ;set_time.c: 107:                 blink_pos = 2;
+[e = _blink_pos -> -> 2 `i `uc ]
+"108
+[; ;set_time.c: 108:                 clear_clcd();
+[e ( _clear_clcd ..  ]
+"109
+[; ;set_time.c: 109:                 set_time_flag = 1;
+[e = _set_time_flag -> -> 1 `i `uc ]
+"110
+[; ;set_time.c: 110:                 write_time_rtc();
+[e ( _write_time_rtc ..  ]
+"111
+[; ;set_time.c: 111:                 return;
+[e $UE 1  ]
+"112
+[; ;set_time.c: 112:             }
+}
+[e :U 20 ]
+"114
+[; ;set_time.c: 114:         }
+}
+[e :U 10 ]
+[e :U 9 ]
+"115
+[; ;set_time.c: 115:         if(time_key == 0x2F)
+[e $ ! == -> _time_key `i -> 47 `i 21  ]
+"116
+[; ;set_time.c: 116:         {
+{
+"117
+[; ;set_time.c: 117:             key_press2++;
+[e ++ _key_press2 -> -> -> 1 `i `l `ul ]
+"118
+[; ;set_time.c: 118:             long_press2 = 0;
+[e = _long_press2 -> -> 0 `i `uc ]
+"119
+[; ;set_time.c: 119:         }
+}
+[e $U 22  ]
+"120
+[; ;set_time.c: 120:         else if(time_key == 0x3F && !long_press2)
+[e :U 21 ]
+[e $ ! && == -> _time_key `i -> 63 `i ! != -> _long_press2 `i -> 0 `i 23  ]
+"121
+[; ;set_time.c: 121:         {
+{
+"122
+[; ;set_time.c: 122:             long_press2 = 1;
+[e = _long_press2 -> -> 1 `i `uc ]
+"123
+[; ;set_time.c: 123:             if(key_press2 < 15000)
+[e $ ! < _key_press2 -> -> -> 15000 `i `l `ul 24  ]
+"124
+[; ;set_time.c: 124:             {
+{
+"126
+[; ;set_time.c: 126:                 blink_pos = (blink_pos+1)%3;
+[e = _blink_pos -> % + -> _blink_pos `i -> 1 `i -> 3 `i `uc ]
+"129
+[; ;set_time.c: 129:             }
+}
+[e :U 24 ]
+"130
+[; ;set_time.c: 130:             key_press2 = 0;
+[e = _key_press2 -> -> -> 0 `i `l `ul ]
+"131
+[; ;set_time.c: 131:         }
+}
+[e :U 23 ]
+[e :U 22 ]
+"132
+[; ;set_time.c: 132:     }
+}
+[e :U 2 ]
+[e $U 3  ]
+[e :U 4 ]
+"134
+[; ;set_time.c: 134: }
+[e :UE 1 ]
+}
+"136
+[; ;set_time.c: 136: void write_time_rtc(void)
+[v _write_time_rtc `(v ~T0 @X0 1 ef ]
+"137
+[; ;set_time.c: 137: {
+{
+[e :U _write_time_rtc ]
+[f ]
+"138
+[; ;set_time.c: 138:     clock_write[0] = ((time[0]-48) & 0x03)<<4;
+[e = *U + &U _clock_write * -> -> -> 0 `i `ui `ux -> -> # *U &U _clock_write `ui `ux -> << & - -> *U + &U _time * -> -> -> 0 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i -> 3 `i -> 4 `i `uc ]
+"139
+[; ;set_time.c: 139:     clock_write[0] |= ((time[1]-48) & 0x0F);
+[e =| *U + &U _clock_write * -> -> -> 0 `i `ui `ux -> -> # *U &U _clock_write `ui `ux -> & - -> *U + &U _time * -> -> -> 1 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i -> 15 `i `uc ]
+"141
+[; ;set_time.c: 141:     clock_write[1] = ((time[3]-48) & 0x07)<<4;
+[e = *U + &U _clock_write * -> -> -> 1 `i `ui `ux -> -> # *U &U _clock_write `ui `ux -> << & - -> *U + &U _time * -> -> -> 3 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i -> 7 `i -> 4 `i `uc ]
+"142
+[; ;set_time.c: 142:     clock_write[1] |= ((time[4]-48) & 0x0F);
+[e =| *U + &U _clock_write * -> -> -> 1 `i `ui `ux -> -> # *U &U _clock_write `ui `ux -> & - -> *U + &U _time * -> -> -> 4 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i -> 15 `i `uc ]
+"144
+[; ;set_time.c: 144:     clock_write[2] = ((time[6]-48) & 0x07)<<4;
+[e = *U + &U _clock_write * -> -> -> 2 `i `ui `ux -> -> # *U &U _clock_write `ui `ux -> << & - -> *U + &U _time * -> -> -> 6 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i -> 7 `i -> 4 `i `uc ]
+"145
+[; ;set_time.c: 145:     clock_write[2] |= ((time[7]-48) & 0x0F);
+[e =| *U + &U _clock_write * -> -> -> 2 `i `ui `ux -> -> # *U &U _clock_write `ui `ux -> & - -> *U + &U _time * -> -> -> 7 `i `ui `ux -> -> # *U &U _time `ui `ux `i -> 48 `i -> 15 `i `uc ]
+"147
+[; ;set_time.c: 147:     write_ds1307(0x00,clock_write[2]);
+[e ( _write_ds1307 (2 , -> -> 0 `i `uc *U + &U _clock_write * -> -> -> 2 `i `ui `ux -> -> # *U &U _clock_write `ui `ux ]
+"148
+[; ;set_time.c: 148:     write_ds1307(0x01,clock_write[1]);
+[e ( _write_ds1307 (2 , -> -> 1 `i `uc *U + &U _clock_write * -> -> -> 1 `i `ui `ux -> -> # *U &U _clock_write `ui `ux ]
+"149
+[; ;set_time.c: 149:     write_ds1307(0x02,clock_write[0]);
+[e ( _write_ds1307 (2 , -> -> 2 `i `uc *U + &U _clock_write * -> -> -> 0 `i `ui `ux -> -> # *U &U _clock_write `ui `ux ]
+"150
+[; ;set_time.c: 150: }
+[e :UE 25 ]
+}
+[a 1C 84 105 109 101 32 60 72 72 58 77 77 58 83 83 62 32 0 ]
