@@ -64,12 +64,16 @@ Set Time
 • The UP key should be used to increment the time. Rollover on reaching max
 
 • The DOWN key will be used to choose the field.
+
 • A long press of UP Key should take you back to main menu
+
 Event Capture
 • 
 • Required events have to be captured and stored in the memory
+
 • Every event should have a format as
 “EVENT SIGNATURE” “EVENT TIME” “SPEED AT THE EVENT”
+
 • The events should be captured real time, no matter which mode you are in
 
 
